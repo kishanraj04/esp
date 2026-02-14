@@ -3,6 +3,6 @@ export const matchPassword = (req, res) => {
 
   return res.status(200).json({
     msg: "hii",
-    received: req.body
+    received: req.body.password
   });
 };
