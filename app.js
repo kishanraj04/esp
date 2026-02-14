@@ -15,6 +15,7 @@ app.get("/", (req, res) => {
 app.get("/api/data", (req, res) => {
   console.log("ruqueste come");
   res.json({
+    name:"kishan",
     message: "Hello from Express server",
     status: true
   });
