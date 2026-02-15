@@ -6,3 +6,10 @@ export const matchPassword = (req, res) => {
     received: req.body.password
   });
 };
+
+
+export const onLight = (req,res)=>{
+    
+
+    return res.json({status:200,msg:"light on"});
+}
