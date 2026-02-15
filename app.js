@@ -23,19 +23,48 @@ app.get("/", (req, res) => {
 const wss = new WebSocketServer({ server });
 
 wss.on("connection", (ws) => {
-  console.log("ESP32 Connected ✅");
+
+  console.log("New client connected");
 
   ws.on("message", (message) => {
-    console.log("Received from ESP32:", message.toString());
+
+    try {
+      const data = JSON.parse(message.toString());
+
+      // 🔥 Check if ESP32
+      if (data.type === "device") {
+        ws.deviceId = data.id;
+
+        console.log("✅ ESP32 Connected:", data.id);
+
+        // 🔥 Send confirmation back
+        ws.send(JSON.stringify({
+          status: "connected",
+          message: "Welcome ESP32"
+        }));
+
+        return;
+      }
+
+      if (ws.deviceId) {
+        console.log("📩 Data from", ws.deviceId, ":", data);
+      }
+
+    } catch (err) {
+      console.log("Invalid JSON received");
+    }
+
   });
 
   ws.on("close", () => {
-    console.log("ESP32 Disconnected ❌");
+    if (ws.deviceId) {
+      console.log("❌ ESP32 Disconnected:", ws.deviceId);
+    }
   });
+
 });
 
-// ❌ app.listen mat use karo
-// ✅ server.listen use karo
-server.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+server.listen(process.env.PORT || 3000, () => {
+  console.log("Server running 🚀");
 });
+
