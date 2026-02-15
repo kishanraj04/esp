@@ -7,6 +7,4 @@ router1.post("/matchpass", matchPassword);
 
 router1.post("/onlight/:lightno",onLight);
 
-
-
 export { router1 };
